@@ -18,8 +18,7 @@ const availableMaleNames = ['pepe', 'edu', 'juan', 'victor', 'Leo', 'francisco',
 const availableFemaleNames = ['cecilia', 'laura', 'ana', 'luisa', 'silvia', 'isabel', 'virginia'];
 const availableGenders = ['male', 'female'];
 
-const mensaje = 'Para salir de la aplicación pulse cualquier número excepto números entre 1 y 18.\n' 
-    + '\n\tMENÚ\n'
+const mensaje = '\n\tMENÚ\n'
     + '\n1- Mostrar todos los alumnos en una tabla.' 
     + '\n2- Mostrar la cantidad de alumnos que hay en clase.'
     + '\n3- Mostrar todos los nombres de los alumnos.'
@@ -39,6 +38,7 @@ const mensaje = 'Para salir de la aplicación pulse cualquier número excepto n�
     + '\n16- Mostrar el alumno de la clase con las mejores notas.' 
     + '\n17- Mostrar la nota media más alta de la clase y el nombre del alumno al que pertenece.'
     + '\n18- Añadir un punto extra a cada nota existente de todos los alumnos. Si aún no tienen registrada ninguna nota, se les otorgará un 10.\n'
+    + '\nPara salir de la aplicación pulse cualquier número excepto números entre 1 y 18.\n' 
 
 //Configuramos la utilidad de Node para que los datos se pidan y se muestren por consola
 const rl = readline.createInterface({
@@ -156,7 +156,7 @@ async function runApp(){
 
 function mostrarTabla(){
     if(students.length == 0){
-        console.log('No hay alumnos introducidos\n');
+        console.log('No hay alumnos introducidos');
     }else{
         console.table(students);
     }
@@ -164,15 +164,15 @@ function mostrarTabla(){
 
 function mostrarTotalAlumnos(){
     if(students.length == 0){
-        console.log('No hay alumnos en clase\n');
+        console.log('No hay alumnos en clase');
     }else{
-        console.log('Hay un total de ' + students.length + ' alumnos en clase.\n');
+        console.log('Hay un total de ' + students.length + ' alumnos en clase.');
     }
 }
 
 function mostrarNombresAlumnos(){
     if(students.length == 0){
-        console.log('No hay alumnos en clase\n');
+        console.log('No hay alumnos en clase');
     }else{
         for(let i = 0; i < students.length; i++)
             console.log(students[i].name);
@@ -181,64 +181,113 @@ function mostrarNombresAlumnos(){
 
 function eliminarUltimoAlumno(){
     if(students.length == 0){
-        console.log('No hay alumnos en clase\n')
+        console.log('No hay alumnos en clase')
     }else{
-        console.table(students);
+        mostrarTabla();
         students.pop();
-        console.table(students);
+        mostrarTabla();
     }
 }
 
 function eliminarAlumnoAleatorio(){
     if(students.length == 0){
-        console.log('No hay alumnos en clase\n')
+        console.log('No hay alumnos en clase')
     }else{
-        console.table(students);
+        mostrarTabla();
         let index = calculateRandomNumber(0, students.length - 1)
         console.log(index);
         students.splice(index, 1);
-        console.table(students);
+        mostrarTabla();
     }
 }
 
 function mostrarDatosChicas(){
     if(students.length == 0){
-        console.log('No hay alumnos en clase\n')
+        console.log('No hay alumnos en clase')
     }else{
-        console.log('Hay un total de ' + students.length + ' alumnos en clase.')
+        for(let i = 0; i < students.length; i++){
+            if(students[i].gender == 'female'){
+                console.log(students[i]);
+            }
+        }
     }
 }
 
 function mostrarTotalChicosyChicas(){
+    let totalChicos = 0;
+    let totalChicas = 0;
     if(students.length == 0){
-        console.log('No hay alumnos en clase\n')
+        console.log('No hay alumnos en clase')
     }else{
-        console.log('Hay un total de ' + students.length + ' alumnos en clase.')
+        for(let i = 0; i < students.length; i++){
+            if(students[i].gender == 'female'){
+                totalChicas++;
+            }else if(students[i].gender == 'male'){
+                totalChicos++;
+            }
+        }
+        console.log(`Chicos en la clase: ${totalChicos} \nChicas en la clase: ${totalChicas}`)
     }
 }
 
 function isTodasChicas(){
+    let todasChicas = true;
     if(students.length == 0){
-        console.log('No hay alumnos en clase\n')
+        console.log('No hay alumnos en clase')
     }else{
-        console.log('Hay un total de ' + students.length + ' alumnos en clase.')
+        for(let i = 0; i < students.length; i++){
+            if(students[i].gender == 'male'){
+                todasChicas = false;
+            }
+        }    
+        console.log('En la clase son todas chicas? ' + todasChicas)
     }
 }
 
 function mostrarNombres20_25(){
+    let alumnosJovenes = [];
     if(students.length == 0){
-        console.log('No hay alumnos en clase\n')
+        console.log('No hay alumnos en clase')
     }else{
-        console.log('Hay un total de ' + students.length + ' alumnos en clase.')
+        for(let i = 0; i < students.length; i++){
+            if((students[i].age >= 20) && (students[i].age <= 25)){
+                alumnosJovenes.push(students[i].name);
+            }
+        }
+        if(alumnosJovenes.length == 0){
+            console.log('No hay ningún alumno que tenga entre 20 y 25 años');
+        }else{
+            for(let i = 0; i < alumnosJovenes.length; i++){
+                console.log(alumnosJovenes[i]);
+            }
+        }
     }
 }
 
 function addNuevoAlumno(){
-    if(students.length == 0){
-        console.log('No hay alumnos en clase\n')
-    }else{
-        console.log('Hay un total de ' + students.length + ' alumnos en clase.')
+
+    let randomGender = calculateRandomNumber(0, availableGenders.length - 1);
+    let randomAge = calculateRandomNumber(20, 50);
+    let randomNameIndex = 0;
+    let randomName;
+
+    if(randomGender == 0){
+        randomNameIndex = calculateRandomNumber(0, availableMaleNames.length - 1);
+        randomName = availableMaleNames[randomNameIndex];
+    }else if(randomGender == 1){
+        randomNameIndex = calculateRandomNumber(0, availableFemaleNames.length - 1);
+        randomName = availableFemaleNames[randomNameIndex];
     }
+
+    let nuevoAlumno = {
+        age: randomAge,
+        examScores: [],
+        gender: availableGenders[randomGender],
+        name: randomName
+    }
+
+    students.push(nuevoAlumno);
+    mostrarTabla();
 }
 
 runApp();
