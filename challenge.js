@@ -402,7 +402,7 @@ function mostrarMejorAlumno(){
         let datosMejorAlumno = getMejorNotaeIndiceAlumno();
         //Si la mejor nota tiene un -1 como valor es que aun no se ha introducido ninguna nota
         if(datosMejorAlumno.mejorNota == -1){
-            console.log('Aún no se ha introducido ninguna nota a ningún alumno')
+            console.log('Aún no se ha introducido ninguna nota a ningún alumno');
         }else{
             //Accedemos al mejor alumno e imprimimos sus datos
             let mejorAlumno = students[datosMejorAlumno.index];
@@ -420,7 +420,7 @@ function mostrarMejorNotaMediayAlumno(){
         let datosMejorAlumno = getMejorNotaeIndiceAlumno();
         //Si la mejor nota tiene un -1 como valor es que aun no se ha introducido ninguna nota
         if(datosMejorAlumno.mejorNota == -1){
-            console.log('Aún no se ha introducido ninguna nota a ningún alumno')
+            console.log('Aún no se ha introducido ninguna nota a ningún alumno');
         }else{
             //Accedemos al mejor alumno e imprimimos su nombre y su nota media
             let mejorAlumno = students[datosMejorAlumno.index];
@@ -466,11 +466,26 @@ function getMejorNotaeIndiceAlumno(){
 }
 
 function addPuntoExtra(){
-    //Añadir un punto extra a cada nota existente de todos los alumnos. Recordad que la nota máxima posible es 10. Si los alumnos aún no tienen registrada ninguna nota, les pondremos un 10.
     if(students.length == 0){
-        console.log('No hay alumnos en clase')
+        console.log('No hay alumnos en clase');
     }else{
-
+        //Recorremos el array students. Por cada alumno calculamos una nota aleatoria y la añadimos al atributo (array) examScores
+        for(let i = 0; i < students.length; i++){
+            //Si el alumno no tiene niguna nota registrada, le añadimos un 10
+            if(students[i].examScores.length == 0){
+                students[i].examScores.push(10);
+            //Por el contrario, recorremos sus notas
+            }else{
+                for(let j = 0; j < students[i].examScores.length; j++){
+                    //Añadimos 1 punto a cada una de ellas siempre y cuando la nota sea menor de 10
+                    if(students[i].examScores[j] < 10){
+                        students[i].examScores[j] += 1;
+                    }
+                }
+            }
+        }
+        //Mostramos la tabla actualizada con las nuevas notas
+        mostrarTabla();
     }
 }
 
