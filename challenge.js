@@ -33,7 +33,7 @@ const mensaje = '\n\tMENÚ\n'
     + '\n12- Mostrar la edad media de todos los alumnos de la clase.'
     + '\n13- Mostrar la edad media de las chicas de la clase.'
     + '\n14- Añadir nueva nota aleatoria (entre 0 y 10) a los alumnos.'
-    + '\n15- Mostrar los nombres de los alumnos ordenados alfabéticamente según su nombre.'
+    + '\n15- Ordenar a los alumnos alfabéticamente según su nombre.'
     //OPCIONAL
     + '\n16- Mostrar el alumno de la clase con las mejores notas.' 
     + '\n17- Mostrar la nota media más alta de la clase y el nombre del alumno al que pertenece.'
@@ -121,28 +121,28 @@ async function runApp(){
                 addNuevoAlumno();
                 break;            
             case 11:
-                console.log('Has escogido la opción ' + optionFromConsole)
+                mostrarAlumnoMasJoven();
                 break;            
             case 12:
-                console.log('Has escogido la opción ' + optionFromConsole)
+                mostrarEdadMediaTotal();
                 break;            
             case 13:
-                console.log('Has escogido la opción ' + optionFromConsole)
+                mostrarEdadMediaChicas();
                 break;            
             case 14:
-                console.log('Has escogido la opción ' + optionFromConsole)
+                addNuevaNota();
                 break;            
             case 15:
-                console.log('Has escogido la opción ' + optionFromConsole)
+                ordenarAlfabeticamente();
                 break;            
             case 16:
-                console.log('Has escogido la opción ' + optionFromConsole)
+                mostrarMejorAlumno();
                 break;            
             case 17:
-                console.log('Has escogido la opción ' + optionFromConsole)
+                mostrarMejorNotaMediayAlumno();
                 break;            
             case 18:
-                console.log('Has escogido la opción ' + optionFromConsole)
+                addPuntoExtra();
                 break; 
 
             default:
@@ -181,7 +181,7 @@ function mostrarNombresAlumnos(){
 
 function eliminarUltimoAlumno(){
     if(students.length == 0){
-        console.log('No hay alumnos en clase')
+        console.log('No hay alumnos en clase');
     }else{
         mostrarTabla();
         students.pop();
@@ -191,10 +191,10 @@ function eliminarUltimoAlumno(){
 
 function eliminarAlumnoAleatorio(){
     if(students.length == 0){
-        console.log('No hay alumnos en clase')
+        console.log('No hay alumnos en clase');
     }else{
         mostrarTabla();
-        let index = calculateRandomNumber(0, students.length - 1)
+        let index = calculateRandomNumber(0, students.length - 1);
         console.log(index);
         students.splice(index, 1);
         mostrarTabla();
@@ -203,7 +203,7 @@ function eliminarAlumnoAleatorio(){
 
 function mostrarDatosChicas(){
     if(students.length == 0){
-        console.log('No hay alumnos en clase')
+        console.log('No hay alumnos en clase');
     }else{
         for(let i = 0; i < students.length; i++){
             if(students[i].gender == 'female'){
@@ -217,7 +217,7 @@ function mostrarTotalChicosyChicas(){
     let totalChicos = 0;
     let totalChicas = 0;
     if(students.length == 0){
-        console.log('No hay alumnos en clase')
+        console.log('No hay alumnos en clase');
     }else{
         for(let i = 0; i < students.length; i++){
             if(students[i].gender == 'female'){
@@ -226,28 +226,28 @@ function mostrarTotalChicosyChicas(){
                 totalChicos++;
             }
         }
-        console.log(`Chicos en la clase: ${totalChicos} \nChicas en la clase: ${totalChicas}`)
+        console.log(`Chicos en la clase: ${totalChicos} \nChicas en la clase: ${totalChicas}`);
     }
 }
 
 function isTodasChicas(){
     let todasChicas = true;
     if(students.length == 0){
-        console.log('No hay alumnos en clase')
+        console.log('No hay alumnos en clase');
     }else{
         for(let i = 0; i < students.length; i++){
             if(students[i].gender == 'male'){
                 todasChicas = false;
             }
         }    
-        console.log('En la clase son todas chicas? ' + todasChicas)
+        console.log('En la clase son todas chicas? ' + todasChicas);
     }
 }
 
 function mostrarNombres20_25(){
     let alumnosJovenes = [];
     if(students.length == 0){
-        console.log('No hay alumnos en clase')
+        console.log('No hay alumnos en clase');
     }else{
         for(let i = 0; i < students.length; i++){
             if((students[i].age >= 20) && (students[i].age <= 25)){
@@ -288,6 +288,102 @@ function addNuevoAlumno(){
 
     students.push(nuevoAlumno);
     mostrarTabla();
+}
+
+function mostrarAlumnoMasJoven(){
+    //Inicializamos la variable con el primer estudiante
+    let alumnoMasJoven = students[0];
+    if(students.length == 0){
+        console.log('No hay alumnos en clase');
+    }else{
+        for(let i = 0; i < students.length; i++){
+            if(students[i].age < alumnoMasJoven.age){
+                alumnoMasJoven = students[i];
+            }
+        }
+        console.log(alumnoMasJoven.name);
+    }
+}
+
+function mostrarEdadMediaTotal(){
+    let edadTotal = 0;
+    if(students.length == 0){
+        console.log('No hay alumnos en clase');
+    }else{
+        for(let i = 0; i < students.length; i++){
+            edadTotal += students[i].age;
+        }
+        let edadMediaTotal = edadTotal/students.length;
+        //Redondeamos a 2 decimales
+        console.log(edadMediaTotal.toFixed(0));
+    }
+}
+
+function mostrarEdadMediaChicas(){
+    let edadChicas = 0;
+    let contador = 0;
+    if(students.length == 0){
+        console.log('No hay alumnos en clase');
+    }else{
+        for(let i = 0; i < students.length; i++){
+            if(students[i].gender == 'female'){
+                edadChicas += students[i].age;
+                contador++;
+            }
+        }
+        let edadMediaChicas = edadChicas/contador;
+        console.log(edadMediaChicas.toFixed(0));
+    }
+}
+
+function addNuevaNota(){
+    if(students.length == 0){
+        console.log('No hay alumnos en clase');
+    }else{
+        for(let i = 0; i < students.length; i++){
+            let nuevaNota = calculateRandomNumber(0, 10);
+            students[i].examScores.push(nuevaNota);
+        }
+        mostrarTabla();
+    }
+}
+
+function ordenarAlfabeticamente(){
+    if(students.length == 0){
+        console.log('No hay alumnos en clase');
+    }else{
+        let arrayOrdenado = students.sort((x,y) =>{
+            return x.name.localeCompare(y.name);
+        })
+         console.table(arrayOrdenado);
+    }
+}
+
+function mostrarMejorAlumno(){
+    //Mostrar por consola el alumno de la clase con las mejores notas.
+    //El alumno con mejores notas es aquel cuyo sumatorio de todas sus notas es el valor más alto de todos.
+    if(students.length == 0){
+        console.log('No hay alumnos en clase')
+    }else{
+
+    }
+}
+
+function mostrarMejorNotaMediayAlumno(){
+    //Mostrar por consola la nota media más alta de la clase y el nombre del alumno al que pertenece.
+    if(students.length == 0){
+        console.log('No hay alumnos en clase')
+    }else{
+
+    }
+}
+
+function addPuntoExtra(){
+    if(students.length == 0){
+        console.log('No hay alumnos en clase')
+    }else{
+
+    }
 }
 
 runApp();
